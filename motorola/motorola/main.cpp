@@ -8,17 +8,21 @@
 #include <d3d9.h>
 #include <tchar.h>
 #include "app.h"
+#include <iostream>
 
 // Data
 static LPDIRECT3D9              g_pD3D = NULL;
 static LPDIRECT3DDEVICE9        g_pd3dDevice = NULL;
 static D3DPRESENT_PARAMETERS    g_d3dpp = {};
 
+int main(int, char**);
+
 // Forward declarations of helper functions
 bool CreateDeviceD3D(HWND hWnd);
 void CleanupDeviceD3D();
 void ResetDevice();
 LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 
 // Main code
 int main(int, char**)
@@ -36,6 +40,7 @@ int main(int, char**)
         ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
         return 1;
     }
+
 
     // Show the window
     ::ShowWindow(hwnd, SW_SHOWDEFAULT);
@@ -72,12 +77,9 @@ int main(int, char**)
     //ImFont* font = io.Fonts->AddFontFromFileTTF("c:\\Windows\\Fonts\\ArialUni.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesJapanese());
     //IM_ASSERT(font != NULL);
 
-    // Font
-
-    //dodanie Polskich znaków   (Jakby ktoœ zrobi³ tak ¿eby dzia³a³o to siê nie obra¿e)
+    //Dodanie Polskich znaków
     ImVector<ImWchar> ranges;
     ImFontGlyphRangesBuilder builder;
-    builder.AddText("¹ ê œ æ Ÿ ¿ ó ³");                        // Add a string (here "Hello world" contains 7 unique characters)
     builder.AddChar(0x104);
     builder.AddChar(0x105);
     builder.AddChar(0x106);
@@ -91,16 +93,17 @@ int main(int, char**)
     builder.AddChar(0x144);
     builder.AddChar(0x144);
     builder.AddChar(0x15A);
+    builder.AddChar(0x15B);
     builder.AddChar(0x17B);
     builder.AddChar(0x179);
     builder.AddChar(0x17A);
     builder.AddChar(0x17B);
     builder.AddChar(0x17C);
-    builder.AddRanges(io.Fonts->GetGlyphRangesDefault()); // Add one of the default ranges
-    builder.BuildRanges(&ranges);                          // Build the final result (ordered ranges with all the unique characters submitted)
-
+    builder.AddRanges(io.Fonts->GetGlyphRangesDefault());
+    builder.BuildRanges(&ranges);
+    // Zmiana fontu
     io.Fonts->AddFontFromFileTTF("questrial_regular.ttf", 20.0f, NULL, ranges.Data);
-    io.Fonts->Build();                                     // Build the atlas while 'ranges' is still in scope and not deleted.
+    io.Fonts->Build();
 
 
     // Our state
@@ -135,6 +138,7 @@ int main(int, char**)
             ImGui::ShowDemoWindow(&show_demo_window);
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
+        if(false)
         {
             static float f = 0.0f;
             static int counter = 0;
@@ -158,20 +162,17 @@ int main(int, char**)
         }
 
         // 3. Show another simple window.
-        //if (show_another_window)
-        //{
-        //    ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-        //    ImGui::Text("Hello from another window!");
-        //    if (ImGui::Button("Close Me"))
-        //        show_another_window = false;
-        //    ImGui::End();
-        //}
+        if (show_another_window)
+        {
+            ImGui::Begin("Another Window", &show_another_window);   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+            ImGui::Text("Hello from another window!");
+            if (ImGui::Button("Close Me"))
+                show_another_window = false;
+            ImGui::End();
+        }
 
 
         // Realna aplikacja
-
-
-
 
         App::RenderGUI();
 
@@ -195,6 +196,7 @@ int main(int, char**)
         if (result == D3DERR_DEVICELOST && g_pd3dDevice->TestCooperativeLevel() == D3DERR_DEVICENOTRESET)
             ResetDevice();
     }
+
 
     ImGui_ImplDX9_Shutdown();
     ImGui_ImplWin32_Shutdown();
