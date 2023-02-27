@@ -1,62 +1,120 @@
-#include "app.h"
+ï»¿#include "app.h"
 #include "imgui/imgui.h"
 #include <iostream>
+#include "ImGuiFileDialog-0.6.4/ImGuiFileDialog.h"
+
 
 using namespace ImGui;
 
-ImVec4 decToVec4(int color[4]) {    // konwerter wartoœci z RGBA na akcepltowalne przez ImVec4
+ImVec4 decToVec4(int color[4]) {    // konwerter wartoÅ›ci z RGBA na akcepltowalne przez ImVec4
     return ImVec4((float)color[0] / 255, (float) color[1] / 255, (float)color[2] / 255, (float)color[3] / 255);
 }
 
+
 namespace App{
 
+    int FilterDNALetters(ImGuiInputTextCallbackData* data){     // Pozwala na wprowadzanie tylko liter okreÅ›lajÄ…cych zasady azotowe
+        if (data->EventChar < 256 && strchr("atgcuATGCU", (char)data->EventChar))
+            return 0;
+        return 1;
+    }
+
     int screen = 0;
+    char wprowadzona_sekwencja[64] = "";
 
     void RenderSequenceInputScreen() {
-        Text("WprowadŸ Sekwencjê\n");
-        TextColored(ImVec4(0, 0, 0, 1), "RNA/DNA");
 
-        if(Button("WprowadŸ")){
-            // kod wykonany po klikniêciu
+        int szerokosc = ImGui::GetIO().DisplaySize.x;
+        SetCursorPos(ImVec2(szerokosc * 0.43, 90));
+        //SetWindowFontScale(1.2);      // skalowanie tekstu rozpikselowywuje tekst 
+        Text(u8"WprowadÅº SekwencjÄ™\n");
+        SetCursorPosX(szerokosc * 0.47);
+        TextColored(ImVec4(0, 0, 0, 1), "RNA/DNA");
+        SetCursorPos(ImVec2(szerokosc * 0.19, 280));
+        InputText("##", wprowadzona_sekwencja, 64, ImGuiInputTextFlags_CallbackCharFilter | ImGuiInputTextFlags_CharsNoBlank | ImGuiInputTextFlags_CharsUppercase, FilterDNALetters);
+        PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+
+        // Do wprowadzenia z pliku
+        SetCursorPosX(szerokosc * 0.19);
+        if (Button("Wybierz plik", ImVec2(200, 50))) {
+            ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", u8"Wybierz plik z sekwencjÄ…", ".txt", ".");
+            ImGuiFileDialog::Instance()->SetFileStyle(IGFD_FileStyleByExtention, ".txt", ImVec4(0, 0.7, 0, 1));     // podÅ›wietla .txt w wyborze
+        };
+        PopStyleColor();
+
+        PushStyleColor(ImGuiCol_Text, ImVec4(1, 0.3, 0.3, 1));
+        if (ImGuiFileDialog::Instance()->Display("ChooseFileDlgKey")) {
+            if (ImGuiFileDialog::Instance()->IsOk()) {
+                std::string filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
+                //std::string filePath = ImGuiFileDialog::Instance()->GetCurrentPath();
+            }
+            ImGuiFileDialog::Instance()->Close();
+
+        }
+        PopStyleColor();
+
+        PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+        SetCursorPosX(szerokosc * 0.19);
+        if (Button(u8"WprowadÅº", ImVec2(200, 50))) {     //guzik potwierdzenia
             screen = 1;
         };
+        PopStyleColor();
     }
 
     void RenderProteinScreen() {
         Text("Ekran 2");
 
+        PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+        if (Button(">")) {
+            screen = 2;
+        };
+        PopStyleColor();
 
     }
 
     void RenderProteinPropertiesScreen() {
+        PushStyleColor(ImGuiCol_WindowBg, decToVec4(new int[4]{ 28, 28, 28, 1 }));
+        // Top Bar
 
+        PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 1, 1));
+        //PushStyleColor(ImGuiCol_MenuBarBg, decToVec4(new int[4]{ 39, 39, 39, 1 }));
+        if (ImGui::BeginMenuBar()) {
+            if (Button("<")) {
+                screen = 1;
+            };
+            Text("KWTKICSLHSLPPQS[stop]");
 
+            ImGui::EndMenuBar();
+        };
 
+        PopStyleColor(2);
     }
 
 
-    void RenderGUI() {
+    void RenderGUI(){
 
         // Style okna
-        // ImVec4 przechowuje 4 parametry, ka¿dy ma wartoœæ od 0-1, gdzie 1 to 255
+        // ImVec4 przechowuje 4 parametry, kaÅ¼dy ma wartoÅ›Ä‡ od 0-1, gdzie 1 to 255
         ImGuiStyle& style = ImGui::GetStyle();
+        style.FrameRounding = 5.3f;
         style.Colors[ImGuiCol_Text] = decToVec4(new int[4]{ 58, 72, 57, 255 });
         style.Colors[ImGuiCol_TextDisabled] = decToVec4(new int[4]{ 58, 72, 57, 255 });
+        style.Colors[ImGuiCol_ChildBg] = decToVec4(new int[4]{ 218, 218, 218, 255 });
         style.Colors[ImGuiCol_WindowBg] = decToVec4(new int[4]{ 218, 218, 218, 255 });
-        style.Colors[ImGuiCol_TitleBg] = ImVec4(0,0,0,0);
-        style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0,0,0,0);
-        style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0,0,0,0);
-        style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0,0,0,0);
+        style.Colors[ImGuiCol_TitleBg] = decToVec4(new int[4]{ 200, 200, 200, 255 });
+        style.Colors[ImGuiCol_TitleBgActive] = decToVec4(new int[4]{ 200, 200, 200, 255 });
+        style.Colors[ImGuiCol_TitleBgCollapsed] = decToVec4(new int[4]{ 200, 200, 200, 255 });
+        style.Colors[ImGuiCol_MenuBarBg] = decToVec4(new int[4]{ 39, 39, 39, 255 });
         style.Colors[ImGuiCol_Button] = decToVec4(new int[4]{ 58, 72, 57, 255 });
-        style.Colors[ImGuiCol_ButtonHovered] = decToVec4(new int[4]{39, 39, 39, 255 });
+        style.Colors[ImGuiCol_ButtonHovered] = decToVec4(new int[4]{ 39, 39, 39, 255 });
         style.Colors[ImGuiCol_ButtonActive] = decToVec4(new int[4]{ 39, 39, 39, 255 });
-        // drawList zobaczyæ
+        // drawList zobaczyÄ‡
 
-        // Ustawienia okna
+        // Ustawienia wewnÄ™trznego okna
         ImGuiWindowFlags window_flags = 0;
         window_flags |= ImGuiWindowFlags_NoTitleBar;
         window_flags |= ImGuiWindowFlags_NoScrollbar;
-        window_flags |= ImGuiWindowFlags_MenuBar;
+        //window_flags |= ImGuiWindowFlags_MenuBar;
         window_flags |= ImGuiWindowFlags_NoMove;
         window_flags |= ImGuiWindowFlags_NoResize;
         window_flags |= ImGuiWindowFlags_NoCollapse;
@@ -65,14 +123,11 @@ namespace App{
         //window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus;
         //window_flags |= ImGuiWindowFlags_UnsavedDocument;
 
+
         const ImGuiViewport* main_viewport = ImGui::GetMainViewport();      
         ImGui::SetNextWindowPos(ImVec2(0,0));       // Startowa pozycja
-        //ImGui::SetNextWindowSize(ImVec2(main_viewport->Size.x, main_viewport->Size.y));     // Rozmiar wewnêtrznego okna dopasowany do zewnêtrznego
-        ImGui::SetNextWindowSize(ImVec2(500,300));
-
-
-
-        Begin("Bioinformatyka", NULL, window_flags);    //tytu³ okna, czy siê zamyka, cechy
+        ImGui::SetNextWindowSize(ImVec2(main_viewport->Size.x, main_viewport->Size.y));     // Rozmiar wewnÄ™trznego okna dopasowany do zewnÄ™trznego
+        Begin("Bioinformatyka", NULL, window_flags);    //tytuÅ‚ okna, czy siÄ™ zamyka, cechy
             
         switch (screen){
         case 0:
@@ -91,10 +146,8 @@ namespace App{
             RenderSequenceInputScreen();
         }
 
-        ImGui::DebugTextEncoding("a¹Ÿ ó ó");
 
         End();
-        ShowDemoWindow();       // okienko, które moze pomóc
     }
 
 
