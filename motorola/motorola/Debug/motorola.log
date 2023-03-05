@@ -1,9 +1,0 @@
-﻿  app.cpp
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(25,23): warning C4244: "inicjowanie": konwersja z "float" do "int", możliwa utrata danych
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(26,33): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(28,33): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(30,33): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(35,33): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(38,109): warning C4305: "argument": obcięcie z "double" do "float"
-C:\Users\Marek\Downloads\Motorolla-main\motorola\motorola\app.cpp(47,33): warning C4244: "argument": konwersja z "double" do "float", możliwa utrata danych
-  motorola.vcxproj -> C:\Users\Marek\Downloads\Motorolla-main\motorola\Debug\motorola.exe

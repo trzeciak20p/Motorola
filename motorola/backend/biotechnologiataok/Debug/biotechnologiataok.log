@@ -1,9 +1,0 @@
-﻿  biotechnologiataok.cpp
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(13,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(20,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(28,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(39,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(58,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(276,23): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
-C:\Users\User\source\repos\biotechnologiataok\biotechnologiataok\biotechnologiataok.cpp(26): warning C4715: "isRNA”: niewszystkie ścieżki kodu zwracają wartość
-  biotechnologiataok.vcxproj -> C:\Users\User\source\repos\biotechnologiataok\Debug\biotechnologiataok.exe
