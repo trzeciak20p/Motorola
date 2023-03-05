@@ -6,6 +6,9 @@ Program analizuje podane przez użytkownika sekwencje DNA/RNA,
 znajdując możliwe w występowaniu białka.
 Potem wypisuje ich wzory sktrukturalne i wybrane właściwości fizyczne w postaci wykresów.
 
+## Specyfikacja
+Program kompilowany był na Visual Studio 2019
+
 ## Zespół:
 - Dziewior Małgorzata
 - Irla Jakub
