@@ -9,6 +9,9 @@ Potem wypisuje ich wzory sktrukturalne i wybrane właściwości fizyczne w posta
 ## Specyfikacja
 Program kompilowany był na Visual Studio 2019
 
+## Uruchomienie
+Aby uruchomić program należy uruchomić plik motorola.exe znajdujący się w folderze Debug 
+
 ## Zespół:
 - Dziewior Małgorzata
 - Irla Jakub
